@@ -4,7 +4,7 @@ const apiClient = axios.create({
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
-  baseURL: 'http://localhost:8000',
+  baseURL: 'https://api-bookcase.herokuapp.com',
   withCredentials: true
 })
 

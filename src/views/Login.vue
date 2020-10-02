@@ -77,10 +77,10 @@ export default {
     }
   },
   methods: {
-    submit () {
+    async submit () {
       if (this.$refs.loginForm.validate()) {
         this.loader = true
-        this.$store.dispatch('login', this.formData)
+        await this.$store.dispatch('login', this.formData)
         this.loader = false
       }
     }

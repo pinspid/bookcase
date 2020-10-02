@@ -28,6 +28,14 @@ const routes = [
     }
   },
   {
+    path: '/book/:title',
+    name: 'showBook',
+    component: () => import('../views/details/showBook.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/loan',
     name: 'loan',
     component: Loan,
@@ -63,6 +71,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/redirect',
+    name: 'redirectToHome',
+    redirect: '/'
   }
 ]
 

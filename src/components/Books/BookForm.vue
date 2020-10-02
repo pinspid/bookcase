@@ -47,7 +47,7 @@
                 outlined
                 dense
                 :rules="rules"
-                v-model="formData.bublisher"
+                v-model="formData.publisher"
                 label="publisher"
                 prepend-icon="mdi-pencil"
               />
@@ -61,7 +61,7 @@
                 :items="categories"
                 label="category"
                 :rules="rules"
-                v-model="formData.category"
+                v-model="category"
                 prepend-icon="mdi-shape"
               />
             </v-col>
@@ -78,7 +78,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="formData.year_publisher"
+                    v-model="date"
                     label="year of publish"
                     prepend-icon="mdi-calendar-range"
                     readonly
@@ -89,7 +89,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="formData.year_publisher"
+                  v-model="date"
                   @input="menu2 = false"
                 ></v-date-picker>
               </v-menu>
@@ -105,7 +105,8 @@
               />
             </v-col>
           </v-row>
-          <v-btn color="success" :loading="loader" @click="submit">Add New Book</v-btn>
+          <v-btn color="success" class="mr-3" :loading="loader" @click="submit">Add New Book</v-btn>
+          <v-btn color="error" @click="dialog = false">Cancel</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -123,12 +124,14 @@ export default {
     formData: {
       title: '',
       edition: '',
-      category: '',
+      category_id: null,
       author: '',
       publisher: '',
-      year_publish: new Date().toISOString().substr(0, 10),
-      num_copy: ''
+      year_publish: null,
+      num_copy: null
     },
+    category: '',
+    date: new Date().toISOString().substr(0, 10),
     menu2: false,
     rules: [
       v => !!v || 'this field is required'
@@ -140,6 +143,21 @@ export default {
   computed: {
     categories () {
       return this.$store.state.onlyCategories
+    },
+    cats () {
+      return this.$store.state.categories
+    }
+  },
+  watch: {
+    category (val) {
+      this.cats.forEach(cat => {
+        if (val === cat.wording) {
+          this.formData.category_id = cat.id
+        }
+      })
+    },
+    date (newVal, oldVal) {
+      this.formData.year_publish = parseInt(newVal.substr(0, 4))
     }
   },
   methods: {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import apiClient from '../services/api'
 import createPersistedState from 'vuex-persistedstate'
+import router from '../router/'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     borrowers: [],
     books: [],
     categories: [],
-    onlyCategories: []
+    onlyCategories: [],
+    loans: []
   },
   getters: {
     getBooks: state => {
@@ -45,6 +47,9 @@ export default new Vuex.Store({
         only.push(cat.wording)
       })
       state.onlyCategories = only
+    },
+    GET_LOAN: (state, data) => {
+      state.loans = data
     }
   },
   actions: {
@@ -60,6 +65,7 @@ export default new Vuex.Store({
       apiClient.get('/sanctum/csrf-cookie').then(res => {
         apiClient.post('/login', data).then(response => {
           context.commit('loggedStatus', true)
+          router.replace({ name: 'home' })
         }).catch(err => console.log(err))
       }).catch(err => {
         console.log(err)
@@ -96,6 +102,14 @@ export default new Vuex.Store({
         commit('categories', categories)
       } catch (error) {
         console.log(error)
+      }
+    },
+    loans: async ({ commit }) => {
+      try {
+        const response = await apiClient.get('/api/loan')
+        commit('GET_LOAN', response.data.data)
+      } catch (err) {
+        console.log(err)
       }
     }
   },

@@ -1,12 +1,14 @@
 <template>
   <div class="category mt-8">
-    <v-snackbar v-model="snackbar" dense :timeout="4000" bottom color="primary">
-      <span>Awesome category add !</span>
+    <v-snackbar
+      v-model="snackbar"
+      rounded="pill"
+      :timeout="4000"
+      bottom
+      color="success"
+    >
+      <span>{{message.success}}</span>
       <v-btn text color="white" @click="snackbar = false">Close</v-btn>
-    </v-snackbar>
-    <v-snackbar v-model="snackbar2" dense :timeout="4000" bottom color="error">
-      <span>category deleted !</span>
-      <v-btn text color="white" @click="snackbar2 = false">Close</v-btn>
     </v-snackbar>
     <h2 class="subheading grey--text">Categories</h2>
     <v-container class="my-3">
@@ -21,13 +23,14 @@
           <span>sort by category name</span>
         </v-tooltip>
         <v-spacer></v-spacer>
-        <CategoryForm @categoryAdded="snackbar = true"/>
+        <CategoryForm @categoryAdded="notify"/>
       </v-layout>
       <v-row>
         <v-col>
           <Categories
             :categories="categories"
-            @catDeleted="snackbar2 = true"
+            @categoryDeleted="notify"
+            @categoryUpdated="notify"
           />
         </v-col>
       </v-row>
@@ -43,7 +46,8 @@ export default {
   data: () => {
     return {
       snackbar: false,
-      snackbar2: false
+      snackbar2: false,
+      message: {}
     }
   },
   components: { Categories, CategoryForm },
@@ -56,6 +60,10 @@ export default {
     this.$store.dispatch('getCategory')
   },
   methods: {
+    notify (e) {
+      this.message = e
+      this.snackbar = true
+    }
   }
 }
 </script>

@@ -5,23 +5,30 @@
         <thead>
           <tr class="text-center">
             <th>
-              Title
+              Borrower
             </th>
             <th>
-              Author
+              Book
             </th>
-            <th>Category</th>
+            <th>
+              Type
+            </th>
+            <th>
+              Loan Date
+            </th>
+            <th>Back Date</th>
+            <th>Return</th>
             <th class="text-right">
               Actions
             </th>
           </tr>
         </thead>
         <tbody>
-          <Book
-            v-for="book in books"
-            :book="book"
-            :key="book.id"
-            @bookDeleted="$emit('deleteMsg')"
+          <Loan
+            v-for="loan in loans"
+            :loan="loan"
+            :key="loan.id"
+            @loanDeleted="$emit('deleteMsg')"
           />
         </tbody>
       </template>
@@ -30,18 +37,18 @@
 </template>
 
 <script>
-import Book from './Book'
+import Loan from './Loan'
 export default {
-  name: 'Books',
+  name: 'Loans',
   data: () => ({}),
   computed: {
-    books () {
-      return this.$store.state.books
+    loans () {
+      return this.$store.state.loans
     }
   },
   props: ['search'],
   components: {
-    Book
+    Loan
   },
   methods: {
 

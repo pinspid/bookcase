@@ -17,7 +17,7 @@
           </v-layout>
         </v-toolbar-title>
         <v-spacer />
-        <v-menu bottom left offset-y v-if="logged">
+        <v-menu bottom left transition="scale-transition" offset-y v-if="logged">
           <template v-slot:activator="{on, attrs}">
             <v-btn icon v-bind="attrs" v-on="on" class="mr-10 white--text">
               <v-icon>mdi-chevron-down</v-icon>Menu
@@ -34,9 +34,23 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn v-if="logged" small color="error" @click="logout">
-          <span>Logout</span>
-        </v-btn>
+        <v-menu bottom transition="scale-transition" left offset-y v-if="logged">
+          <template v-slot:activator="{on, attrs}">
+            <v-btn icon v-bind="attrs" v-on="on" class="mr-5 white--text">
+              <v-icon>mdi-chevron-down</v-icon>{{user.name}}
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item class="cursor: pointer">
+              <v-list-item-icon>
+                <v-icon color="error">mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title @click="logout" class="text--darken-1">Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-btn v-if="!logged" small color="primary">
           <span>Sign Up</span>
         </v-btn>
@@ -92,9 +106,6 @@ export default {
     user () {
       return this.$store.state.user
     }
-  },
-  mounted () {
-    this.$store.dispatch('getAuth')
   },
   methods: {
     logout () {

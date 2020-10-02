@@ -2,15 +2,11 @@
     <tr>
       <td>{{ book.title }}</td>
       <td>{{ book.author }}</td>
-      <td>{{ book.edition }}</td>
-      <td>{{ book.year_publish }}</td>
-      <td>{{ book.num_copy }}</td>
-      <td>{{ book.available_copy }}</td>
       <td>{{ book.category }}</td>
       <td class="text-right">
         <v-row>
           <v-col>
-            <router-link :to="{name: 'showBorrower', params: {id: book.id}}">
+            <router-link :to="{name: 'showBook', params: {title: book.title}}">
               <v-tooltip top>
                 <template v-slot:activator="{on}">
                   <v-btn class="mr-2" v-on="on" small color="primary">
@@ -22,7 +18,7 @@
             </router-link>
             <v-tooltip top>
               <template v-slot:activator="{on}">
-                <v-btn small v-on="on" color="error" :loading="loader" @click="deleteBorrower(book.id)">
+                <v-btn small v-on="on" color="error" :loading="loader" @click="deleteBook(book.id)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
               </template>
@@ -43,7 +39,7 @@ export default {
     loader: false
   }),
   methods: {
-    deleteBorrower (id) {
+    deleteBook (id) {
       this.loader = true
       apiClient.delete('/api/book/' + id).then(response => {
         if (response.data.success) {

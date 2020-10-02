@@ -13,7 +13,13 @@
           </tr>
         </thead>
         <tbody>
-          <CategoryComponent v-for="category in categories" :key="category.id" :category="category" @categoryDeleted="$emit('catDeleted')"/>
+          <CategoryComponent
+            v-for="category in categories"
+            :key="category.id"
+            :category="category"
+            @categoryDeleted="notifyDeleted"
+            @notify="notifyUpadate"
+          />
         </tbody>
       </template>
     </v-simple-table>
@@ -38,6 +44,12 @@ export default {
         search != null &&
         typeof value === 'string' &&
         value.toString().toLocaleUpperCase().indexOf(search) !== -1
+    },
+    notifyUpadate (e) {
+      this.$emit('categoryUpdated', e)
+    },
+    notifyDeleted (e) {
+      this.$emit('categoryDeleted', e)
     }
   }
 }
